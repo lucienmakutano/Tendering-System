@@ -1,0 +1,106 @@
+{% extends("buyer/home.html") %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block sidebar %}
+    {% if current_user.user_type == "buyer" %}
+        {{ super() }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8">
+                 {% with messages = get_flashed_messages(with_categories=False) %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert-success">
+                                <span>{{ message }}<a href="{{ url_for('publish_tender') }}">post your tender</a></span>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <form action="{{ url_for('company_information') }}" method="post">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">Company Information</legend>
+                        <div class="form-group">
+                            {{ form.company_name.label(class="form-control-label") }}
+                            {% if form.company_name.errors %}
+                                {{ form.company_name(class="form-control form-control-lg is_invalid") }}
+                                {% for error in form.company_name.errors %}
+                                    <div class="text-danger">
+                                        <span>{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.company_name(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+
+
+                        <div class="form-group">
+                            {{ form.company_type.label(class="form-control-label") }}
+                            {% if form.company_type.errors %}
+                                {{ form.company_type(class="form-control form-control-lg is_invalid") }}
+                                {% for error in form.company_type.errors %}
+                                    <div class="text-danger">
+                                        <span>{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.company_type(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+
+
+                        <div class="form-group">
+                            {{ form.phone_number.label(class="form-control-label") }}
+                            {% if form.phone_number.errors %}
+                                {{ form.phone_number(class="form-control form-control-lg is_invalid") }}
+                                {% for error in form.phone_number.errors %}
+                                    <div class="text-danger">
+                                        <span>{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.phone_number(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+
+
+
+                        <div class="form-group">
+                            {{ form.address.label(class="form-control-label") }}
+                            {% if form.address.errors %}
+                                {{ form.address(class="form-control form-control-lg is_invalid") }}
+                                {% for error in form.address.errors %}
+                                    <div class="text-danger">
+                                        <span>{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.address(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                    </fieldset>
+
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-primary btn-m btn-block", style="background-color: #C20707")}}
+                    </div>
+                </form>
+            </div>
+            <div class="col-4">
+                <div>
+                    <ul>
+                        <li class="sidebar-links"><a  href="{{ url_for('company_information') }}">company information</a></li>
+                        <li class="sidebar-links"><a  href="{{ url_for('user_information') }}">User information</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

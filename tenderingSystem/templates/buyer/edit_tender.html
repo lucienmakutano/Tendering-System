@@ -1,0 +1,201 @@
+{% extends("buyer/home.html") %}
+
+{% block head %}
+    {{ super() }}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+{% endblock %}
+
+
+{% block sidebar %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block body %}
+<fieldset class="form-group">
+    <legend class="border-bottom mb-4">Here Is The List Of All Your tenders</legend>
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+        <th scope="col">Entity name</th>
+        <th scope="col">Entity type</th>
+        <th scope="col">Title</th>
+        <th scope="col">Status</th>
+        <th scope="col">Date published</th>
+        <th scope="col">Closing date</th>
+        <th scope="col">Tender document</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for tender in tenders %}
+    <tr>
+      <th scope="row">
+          <a href="{{ url_for('load_tender', tender_id=tender.id) }}"><i class="far fa-edit"></i></a>&nbsp;
+          <a href="{{ url_for('delete_tender', tender_id=tender.id) }}"><i class="fas fa-trash-alt" onclick="confirm('do you really want to delete this tender?')"></i></a>
+      </th>
+      <td>{{ tender.entity_name }}</td>
+      <td>{{ tender.entity_type }}</td>
+      <td>{{ tender.title }}</td>
+      <td>{{ tender.status }}</td>
+      <td>{{ tender.date_published }}</td>
+      <td>{{ tender.date_closed }}</td>
+      <td>{{ tender.tender_document }}</td>
+  {% endfor %}
+  </tbody>
+</table>
+</fieldset>
+
+
+    {% if editable_tenders %}
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Edit Tender</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <form action="{{ url_for('load_tender', tender_id=editable_tenders.id) }}" method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.entity_name.label(class="form-control-label") }}
+
+                    {% if  form.entity_name.errors %}
+                        {{ form.entity_name(class="form-control form-control-m is-invalid", autocomplete="off", value=editable_tenders.entity_name) }}
+                        {% for error in form.entity_name.errors %}
+                            <div class="text-danger">
+                                <span>{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.entity_name(class="form-control form-control-m", autocomplete="off", value=editable_tenders.entity_name) }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.entity_type.label(class="form-control-label") }}
+
+                    {% if form.entity_type.errors %}
+                        {{ form.entity_type(class="form-control form-control-m is_invalid", autocomplete="off", value=editable_tenders.entity_type) }}
+                        {% for error in form.entity_type.errors %}
+                            <div class="text-danger">
+                                <span>{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.entity_type(class="form-control form-control-m", autocomplete="off", value=editable_tenders.entity_type) }}
+                    {% endif %}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form.title.label(class="form-control-label") }}
+                    {% if form.title.errors %}
+                        {{ form.title(class="form-control form-control-m is_invalid", autocomplete="off", value=editable_tenders.title) }}
+                        {% for error in form.title.errors %}
+                            <div class="text-danger">
+                                <span>{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.title(class="form-control form-control-m", autocomplete="off", value=editable_tenders.title) }}
+                    {% endif %}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form.status.label(class="form-control-label") }}
+
+                    {% if form.status.errors %}
+                        {{ form.status(class="form-control form-control-m is_invalid", autocomplete="off", value=editable_tenders.status) }}
+                        {% for error in form.status.errors %}
+                            <div class="text-danger">
+                                <span>{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.status(class="form-control form-control-m", autocomplete="off", value=editable_tenders.status) }}
+                    {% endif %}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form.date_published.label(class="form-control-label") }}
+
+                    {% if form.date_published.errors %}
+                        {{ form.date_published(class="form-control form-control-m id_invalid", autocomplete="off", value=editable_tenders.date_published) }}
+                        {% for error in form.date_published.errors %}
+                            <div class="text-danger">
+                                <span>{{ error }}</span>
+                            </div>
+                        {% endfor %}
+
+                    {% else %}
+                        {{ form.date_published(class="form-control form-control-m", autocomplete="off", value=editable_tenders.date_published) }}
+                    {% endif %}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form.date_closed.label(class="form-control-label") }}
+                        {% if form.date_closed.errors %}
+                            {{ form.date_closed(class="form-control form-control-m is_invalid", autocomplete="off", value=editable_tenders.date_closed) }}
+                            {% for error in form.date_closed.errors %}
+                                <div class="text-danger">
+                                    <span>{{ error }}</span>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            {{ form.date_closed(class="form-control form-control-m", autocomplete="off", value=editable_tenders.date_closed) }}
+                        {% endif %}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form.tender_document.label(class="form-control-label") }}
+                    {% if form.tender_document.errors %}
+                        {{ form.tender_document(class="form-control-file", value=editable_tenders.tender_document) }}
+                        {% for error in form.tender_document.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+
+                    {% else %}
+                        {{ form.tender_document(class="form-control-file") }}
+                    {% endif %}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-primary btn-m btn-block", style="background-color: #C20707") }}
+                </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endif %}
+
+    <script>
+        <!-- //script for show signin and signup modal -->
+        $(document).ready(function () {
+            $("#exampleModalScrollable").modal();
+        });
+
+        //script for showing signin and signup modal
+        <!-- smooth dropdown -->
+        $(document).ready(function () {
+            $('ul li.dropdown').hover(function () {
+                $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(200);
+            }, function () {
+                $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(200);
+            });
+        });
+    </script>
+{% endblock %}

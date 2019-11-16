@@ -1,0 +1,107 @@
+{% extends('layout.html') %}
+
+{% block head %}
+    {{ super() }}
+          <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/landingPage.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="body">
+        <div class="above-the-fold">
+            <div class="head-line"><p>let us grow your<br>business</p></div>
+            <div class="sub-head-line">we provide tender opportunity<br> for your business to grow</div>
+            <div class="call-for-action">
+                <a href="{{ url_for('login') }}"><button class="btn btn-primary btn-lg" style="background-color: #C20707">Join today</button></a>
+            </div>
+        </div>
+
+
+        <div class="benefits">
+            <div class="benefit shadow-lg bg-white p-3 mb-5  rounded">
+                <img class="shadow-lg p-3 mb-5  rounded" src="{{ url_for('static', filename='images/financial.png') }}" alt>
+                <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+            </div>
+            <div class="benefit shadow-lg bg-white p-3 mb-5  rounded">
+                <img class="shadow-lg p-3 mb-5  rounded" src="{{url_for('static', filename='images/reports.png') }}" alt>
+                <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+            </div>
+            <div class="benefit shadow-lg p-3 bg-white mb-5  rounded">
+                <img class="shadow-lg p-3 mb-5 rounded" src="{{url_for('static', filename='images/security-p.png') }}" alt>
+                <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="testimonials">
+            <div class="testimonial1">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+            <div class="testimonial2">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+            <div class="testimonial3">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+        </div>
+
+
+        <div class="newsletter-subscription">
+            <div class="container">
+                <h2>Newsletter</h2>
+                <p>stay upto date with our latest news</p>
+                <form action="{{ url_for('subscribe') }}" method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="form-row align-items-center">
+                        <div class="col-8">
+                            {{ form.email.label(class="sr-only") }}
+                            {% if form.email.errors %}
+                                 {{ form.email(class="form-control form-control-lg is-invalid") }}
+                                {% for error in form.email.errors %}
+                                    <div class="invalid-feedback">
+                                        <span>{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                 {{ form.email(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                        <div class="col">
+                            {{ form.submit(class = "btn btn-primary btn-lg", style="background-color: #C20707") }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-4 p-5 logo">LOGO</div>
+                    <div class="col-4 p-5 useful-links">
+                        <ul>
+                            <li><a>new tenders</a></li>
+                            <li><a>new tenders</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-4 p-5 social-media link">
+                        <ul>
+                            <li><a href="https://www.linkedin.com/" target="_blank"><img src="{{ url_for('static', filename='images/linkedin-logo.png') }}" alt=""></a></li>
+                            <li><a href="https://www.facebook.com/" target="_blank"><img src="{{ url_for('static', filename='images/facebook-letter-logo.png') }}" alt=""></a></li>
+                            <li><a href="https://twitter.com/" target="_blank"><img src="{{ url_for('static', filename='images/twitter-logo.png') }}" alt=""></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

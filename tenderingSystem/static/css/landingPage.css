@@ -1,0 +1,75 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
+}
+.body{
+    display: grid;
+    grid-template-rows: 590px auto auto 200px 200px;
+}
+
+.above-the-fold{
+    text-align: center;
+}
+.sub-head-line, .head-line{
+    color: #C20707;
+}
+
+.head-line p{
+    margin-top: 80px;
+    text-transform: capitalize;
+    font-size: 3.25rem;
+    font-weight: 600;
+}
+.sub-head-line{
+    font-size: 2rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+.call-for-action{
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+.call-for-action button{
+    width: 20rem;
+    text-transform: capitalize;
+}
+.benefits{
+    background-color: #E1DFDF;
+}
+.footer{
+    width: 100%;
+}
+.benefits{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    justify-content: center;
+    align-items: center;
+    grid-column-gap: 30px;
+    grid-row-gap: 50px;
+    padding: 0 20px;
+}
+.benefit img{
+    width: 100%;
+    border: none;
+    box-shadow: #888888;
+}
+h2, p{
+    text-align: center;
+    color: #C20707;
+}
+.link li a img{
+    height: 30px;
+    width: 30px;
+     display: inline-block;
+}
+.link li{
+    list-style: none;
+	display: inline-block;
+	font-size: 20px;
+	transition: all .5s ease 0s;
+	width: 30px;
+}
+.newsletter-subscription{
+    background-color: #E1DFDF;
+}

@@ -1,0 +1,28 @@
+.login-container{
+    padding: 5% 15% 0 15%;
+}
+.register-container{
+    padding: 2% 15% 0 15%;
+}
+body{
+    background-color: rgba(245, 230, 230, 0.7);
+}
+.login-form{
+    padding: 10px 30px;
+}
+.div-form{
+    background-color: #ffffff;
+    border: 1px solid ;
+    padding: 10px;
+    box-shadow: 5px 10px 18px #888888;
+    border-radius: 20px;
+}
+h2, a{
+    color: #C20707;
+}
+.div-form > h2, .div-form > p{
+    text-align: center;
+}
+.login-card{
+    padding: 0 2rem;
+}

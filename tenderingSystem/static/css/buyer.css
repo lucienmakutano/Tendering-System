@@ -1,0 +1,24 @@
+*{
+    margin:0;
+    padding: 0;
+    font-size: 16px;
+    list-style: none;
+    text-decoration: none;
+}
+
+.sidebar-links a {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    padding: .75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.125);
+	border-top-color: rgba(0, 0, 0, .125);
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.sidebar-links a:hover{
+    color: #fff;
+    background-color: #88b3f7;
+}

@@ -1,0 +1,52 @@
+{% extends('supplier/layout.html') %}
+{% block head %}
+    {{ super() }}
+ <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/supplier.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="search-bar">
+            <form method="GET" action="search" class="search">
+                <input name="search here" placeholder="search here" id="input">
+                <button name="search" id="search_btn" >search</button>
+            </form>
+        </div>
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr class="table_name">
+                    <th scope="col">#</th>
+                    <th scope="col">Entity name</th>
+                    <th scope="col">Entity type</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Date published</th>
+                    <th scope="col">Closing date</th>
+                    <th scope="col">Tender document</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tender in tenders %}
+                    <tr>
+                        <th scope="row">{{ 1 }}</th>
+                        <td>{{ tender.entity_name }}</td>
+                        <td>{{ tender.entity_type }}</td>
+                        <td>{{ tender.title }}</td>
+                        <td>{{ tender.status }}</td>
+                        <td>{{ tender.date_published }}</td>
+                        <td>{{ tender.date_closed }}</td>
+                        <td><a href="{{ url_for('tender_document', tender_id=tender.id) }}">{{ tender.tender_document }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="footer">
+            <div class="footer-top">
+            </div>
+            <div class="footer-bottom">
+                <label>copyright &copy 2019-All Rights Reserved.</label>
+            </div>
+        </div>
+    </div>
+{% endblock %}
