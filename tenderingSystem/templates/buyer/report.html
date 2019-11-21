@@ -2,6 +2,33 @@
 
 {% block head %}
     {{ super() }}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses', 'Profit'],
+          ['2014', 1000, 400, 200],
+          ['2015', 1170, 460, 250],
+          ['2016', 660, 1120, 300],
+          ['2017', 1030, 540, 350]
+        ]);
+
+        var options = {
+          chart: {
+            title: 'Company Performance',
+            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+          },
+          bars: 'vertical' // Required for Material Bar Charts.
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script>
 {% endblock %}
 
 
@@ -13,5 +40,39 @@
 {% block body %}
     <fieldset class="form-group">
         <legend class="border-bottom mb-4">Here Is The Report Of Your Activities</legend>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="chart">
+                            <div id="barchart_material" style="width: 480px; height: 380px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </fieldset>
+
+
+
+
+    <!-- jQuery 3 -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <!-- ChartJS -->
+    <script src="{{ url_for('static', filename='js/Chart.js') }}"></script>
+    <!-- FastClick -->
+    <script src="{{ url_for('static', filename='js/fastclick.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ url_for('static', filename='js/adminlte.min.js') }}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{{ url_for('static', filename='js/demo.js') }}"></script>
+    <!-- page script -->
 {% endblock %}

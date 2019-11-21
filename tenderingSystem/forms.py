@@ -55,6 +55,14 @@ class CompanyForm(FlaskForm):
     submit = SubmitField("register")
 
 
+class UpdateCompanyForm(FlaskForm):
+    company_name = StringField("Company name", validators=[DataRequired()])
+    phone_number = IntegerField("Telephone number", validators=[DataRequired()])
+    address = StringField("Address", validators=[DataRequired()])
+    company_type = StringField("Company type", validators=[DataRequired()])
+    submit = SubmitField("Update")
+
+
 class UserForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired(), length(min=8, max=30)])

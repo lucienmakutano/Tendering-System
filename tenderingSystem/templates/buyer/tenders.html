@@ -12,155 +12,162 @@
 
 
 {% block body %}
-    {% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                {% if category == "danger" %}
-                    <div class="alert alert-{{ category }}">
-                        <span>{{ message }}</span>
-                    </div>
-                {% elif category == "warning" %}
-                    <div class="alert alert-{{ category }}">
-                        <span>{{ message }}<a href="{{url_for('company_information')}}">register here</a></span>
-                    </div>
-                {% elif category == "success"%}
-                    <div class="alert alert-{{ category }}">
-                        <span>{{ message }}<a href="{{url_for('edit_tender')}}">check it out</a></span>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <form action="{{ url_for('publish_tender') }}" method="post" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Post Your Tender Here</legend>
-            <div class="form-group">
-                {{ form.entity_name.label(class="form-control-label") }}
-
-
-
-                {% if  form.entity_name.errors %}
-                    {{ form.entity_name(class="form-control form-control-m is-invalid", autocomplete="off") }}
-                    {% for error in form.entity_name.errors %}
-                        <div class="text-danger">
-                            <span>{{ error }}</span>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    {{ form.entity_name(class="form-control form-control-m", autocomplete="off") }}
-                {% endif %}
-            </div>
-
-
-
-            <div class="form-group">
-                {{ form.entity_type.label(class="form-control-label") }}
-
-                {% if form.entity_type.errors %}
-                    {{ form.entity_type(class="form-control form-control-m is_invalid", autocomplete="off") }}
-                    {% for error in form.entity_type.errors %}
-                        <div class="text-danger">
-                            <span>{{ error }}</span>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    {{ form.entity_type(class="form-control form-control-m", autocomplete="off") }}
-                {% endif %}
-            </div>
-
-
-
-
-            <div class="form-group">
-                {{ form.title.label(class="form-control-label") }}
-                {% if form.title.errors %}
-                    {{ form.title(class="form-control form-control-m is_invalid", autocomplete="off") }}
-                    {% for error in form.title.errors %}
-                        <div class="text-danger">
-                            <span>{{ error }}</span>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    {{ form.title(class="form-control form-control-m", autocomplete="off") }}
-                {% endif %}
-            </div>
-
-
-
-
-            <div class="form-group">
-                {{ form.status.label(class="form-control-label") }}
-
-                {% if form.status.errors %}
-                    {{ form.status(class="form-control form-control-m is_invalid", autocomplete="off") }}
-                    {% for error in form.status.errors %}
-                        <div class="text-danger">
-                            <span>{{ error }}</span>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    {{ form.status(class="form-control form-control-m", autocomplete="off") }}
-                {% endif %}
-            </div>
-
-
-
-
-            <div class="form-group">
-                {{ form.date_published.label(class="form-control-label") }}
-
-                {% if form.date_published.errors %}
-                    {{ form.date_published(class="form-control form-control-m id_invalid", autocomplete="off") }}
-                    {% for error in form.date_published.errors %}
-                        <div class="text-danger">
-                            <span>{{ error }}</span>
-                        </div>
-                    {% endfor %}
-
-                {% else %}
-                    {{ form.date_published(class="form-control form-control-m", autocomplete="off") }}
-                {% endif %}
-            </div>
-
-
-
-
-            <div class="form-group">
-                {{ form.date_closed.label(class="form-control-label") }}
-                    {% if form.date_closed.errors %}
-                        {{ form.date_closed(class="form-control form-control-m is_invalid", autocomplete="off") }}
-                        {% for error in form.date_closed.errors %}
-                            <div class="text-danger">
-                                <span>{{ error }}</span>
-                            </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Post Your Tender Here</h3>
+                </div>
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            {% if category == "danger" %}
+                                <div class="alert alert-{{ category }}">
+                                    <span>{{ message }}</span>
+                                </div>
+                            {% elif category == "warning" %}
+                                <div class="alert alert-{{ category }}">
+                                    <span>{{ message }}<a href="{{url_for('company_information')}}">register here</a></span>
+                                </div>
+                            {% elif category == "success"%}
+                                <div class="alert alert-{{ category }}">
+                                    <span>{{ message }}<a href="{{url_for('edit_tender')}}">check it out</a></span>
+                                </div>
+                            {% endif %}
                         {% endfor %}
-                    {% else %}
-                        {{ form.date_closed(class="form-control form-control-m", autocomplete="off") }}
                     {% endif %}
+                {% endwith %}
+                <form action="{{ url_for('publish_tender') }}" method="post" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    <div class="box-body">
+                        <div class="form-group">
+                            {{ form.entity_name.label(class="form-control-label") }}
+                            {% if  form.entity_name.errors %}
+                                {{ form.entity_name(class="form-control form-control-m is-invalid", autocomplete="off") }}
+                                {% for error in form.entity_name.errors %}
+                                    <div class="text-danger">
+                                        <span>{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.entity_name(class="form-control form-control-m", autocomplete="off") }}
+                            {% endif %}
+                        </div>
+
+
+
+                        <div class="form-group">
+                            {{ form.entity_type.label(class="form-control-label") }}
+
+                            {% if form.entity_type.errors %}
+                                {{ form.entity_type(class="form-control form-control-m is_invalid", autocomplete="off") }}
+                                {% for error in form.entity_type.errors %}
+                                    <div class="text-danger">
+                                        <span>{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.entity_type(class="form-control form-control-m", autocomplete="off") }}
+                            {% endif %}
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            {{ form.title.label(class="form-control-label") }}
+                            {% if form.title.errors %}
+                                {{ form.title(class="form-control form-control-m is_invalid", autocomplete="off") }}
+                                {% for error in form.title.errors %}
+                                    <div class="text-danger">
+                                        <span>{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.title(class="form-control form-control-m", autocomplete="off") }}
+                            {% endif %}
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            {{ form.status.label(class="form-control-label") }}
+
+                            {% if form.status.errors %}
+                                {{ form.status(class="form-control form-control-m is_invalid", autocomplete="off") }}
+                                {% for error in form.status.errors %}
+                                    <div class="text-danger">
+                                        <span>{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {{ form.status(class="form-control form-control-m", autocomplete="off") }}
+                            {% endif %}
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            {{ form.date_published.label(class="form-control-label") }}
+
+                            {% if form.date_published.errors %}
+                                {{ form.date_published(class="form-control form-control-m id_invalid", autocomplete="off") }}
+                                {% for error in form.date_published.errors %}
+                                    <div class="text-danger">
+                                        <span>{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+
+                            {% else %}
+                                {{ form.date_published(class="form-control form-control-m", autocomplete="off") }}
+                            {% endif %}
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            {{ form.date_closed.label(class="form-control-label") }}
+                                {% if form.date_closed.errors %}
+                                    {{ form.date_closed(class="form-control form-control-m is_invalid", autocomplete="off") }}
+                                    {% for error in form.date_closed.errors %}
+                                        <div class="text-danger">
+                                            <span>{{ error }}</span>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    {{ form.date_closed(class="form-control form-control-m", autocomplete="off") }}
+                                {% endif %}
+                        </div>
+
+
+
+
+                        <div class="form-group">
+                            {{ form.tender_document.label(class="form-control-label") }}
+                            {% if form.tender_document.errors %}
+                                {{ form.tender_document(class="form-control-file") }}
+                                {% for error in form.tender_document.errors %}
+                                    <span class="text-danger">{{ error }}</span><br>
+                                {% endfor %}
+
+                            {% else %}
+                                {{ form.tender_document(class="form-control-file") }}
+                            {% endif %}
+                        </div>
+                        </div>
+
+                        <div class="box-footer">
+                            <div class="form-group">
+                                {{ form.submit(class="btn btn-primary btn-m btn-block", style="background-color: #C20707") }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-
-
-
-            <div class="form-group">
-                {{ form.tender_document.label(class="form-control-label") }}
-                {% if form.tender_document.errors %}
-                    {{ form.tender_document(class="form-control-file") }}
-                    {% for error in form.tender_document.errors %}
-                        <span class="text-danger">{{ error }}</span><br>
-                    {% endfor %}
-
-                {% else %}
-                    {{ form.tender_document(class="form-control-file") }}
-                {% endif %}
-            </div>
-        </fieldset>
-
-
-
-        <div class="form-group">
-            {{ form.submit(class="btn btn-primary btn-m btn-block", style="background-color: #C20707") }}
-        </div>
-    </form>
+        <div class="col-md-2"></div>
+    </div>
 {% endblock %}

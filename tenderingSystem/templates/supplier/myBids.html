@@ -1,0 +1,36 @@
+{% extends('supplier/layout.html')%}
+
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/supplier.css') }}">
+{% endblock %}
+
+
+
+{% block content %}
+    <table class="table">
+        <thead class="thead-dark">
+            <th scope="col">Title</th>
+            <th scope="col">Date published</th>
+            <th scope="col">Closing Date</th>
+            <th scope="col">tender document</th>
+            <th scope="col">Bid document</th>
+            <th scope="col">Date submitted</th>
+        </thead>
+        <tbody>
+            {% if bids %}
+                {% for bid in bids %}
+                    <tr>
+                        <td>{{ bid.title }}</td>
+                        <td>{{ bid.date_published }}</td>
+                        <td>{{ bid.date_closed }}</td>
+                        <td><a href="{{ url_for("download_tender_document", document_name=bid.tender_document) }}" target="_blank">{{ bid.tender_document }}</a></td>
+                        <td><a href="{{ url_for('download_bds_document', document_name=bid.bid_document) }}" target="_blank">{{bid.bid_document}}</a></td>
+                        <td>{{bid.date_submitted}}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}

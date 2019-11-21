@@ -65,7 +65,8 @@ class Bid(db.Model):
     id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)
     bid_document = db.Column(db.String(50), nullable=False)
     date_submitted = db.Column(db.DATETIME, default=datetime.utcnow())
+    # is_deleted = db.Column(bd.Boolean, default=False)
     bid_poster = db.Column(db.INTEGER, db.ForeignKey('company.id'))
 
     def __repr__(self):
-        return f"Bid('{self.bid_document}', '{self.title}', '{self.date_submitted}', '{self.bid_poster}'"
+        return f"Bid('{self.bid_document}', '{self.date_submitted}', '{self.bid_poster}'"

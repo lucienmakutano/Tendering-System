@@ -14,12 +14,23 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!--Import materialize.css-->
         <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+
+          <link rel="stylesheet" href="{{ url_for('static', filename='css/_all-skins.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/adminLTE.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/ionicons.min.css') }}">
         <title>{{ title }}</title>
       {% endblock %}
   </head>
-  <body>
+  <body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%;">
+    <div class="wrapper">
+
+    </div>
   <nav class="navbar  navbar-light bg-light sticky-top">
-      <a class="navbar-brand" href="#">Growth</a>
+      {% if current_user.user_type == "supplier" %}
+          <a class="navbar-brand logo" href="{{ url_for('supplier_home') }}">Growth</a>
+      {% elif current_user.user_type == "buyer" %}
+          <a class="navbar-brand logo" href="{{ url_for('buyer_home') }}">Growth</a>
+      {% endif %}
       <ul class="nav justify-content-end">
           <li class="nav-item dropdown">
               {% if company_name %}
@@ -43,11 +54,10 @@
       </ul>
   </nav>
    <div class="container-fluid">
-        <div class="row flex-xl-nowrap">
-            <div class="col-12 col-md-3 col-xl-2 bd-sidebar pt-4 position-sticky">{% block sidebar %}{% endblock %}</div>
-            <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">{% block body %}{% endblock %}</main>
-            <div class="col-12 col-md-3 col-xl-2 bd-sidebar pt-4 position-sticky">{% block r_sidebar %}{% endblock %}</div>
-        </div>
+       <aside class="main-sidebar">
+           <section class="sidebar" style="height: auto;">{% block sidebar %}{% endblock %}</section></aside>
+       <main class="content-wrapper" style="min-height: auto;">{% block body %}{% endblock %}</main>
+       <div class="col-12 col-md-3 col-xl-2 bd-sidebar pt-4 position-sticky">{% block r_sidebar %}{% endblock %}</div>
   </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

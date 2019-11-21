@@ -20,4 +20,4 @@ login_manager = LoginManager(app)
 login_manager.login_view = "login"
 login_manager.login_message = "your session has timed out. login to access this page"
 login_manager.login_message_category = "warning"
-from tenderingSystem import routes
+from tenderingSystem import routes, supplierRoutes, buyerRoutes

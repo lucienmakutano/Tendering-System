@@ -12,13 +12,15 @@
     text-decoration: none;
     padding: .75rem 1.25rem;
     margin-bottom: -1px;
-    background-color: #fff;
+    background-color: #222d32;
 	border: 1px solid rgba(0, 0, 0, 0.125);
 	border-top-color: rgba(0, 0, 0, .125);
     transition: all 0.3s ease-in-out 0s;
 }
 
 .sidebar-links a:hover{
-    color: #fff;
-    background-color: #88b3f7;
+    color: #222d32;
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
 }
+

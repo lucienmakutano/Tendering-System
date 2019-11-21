@@ -16,62 +16,71 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-8">
-                {% with messages = get_flashed_messages(with_categories=False) %}
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert-success">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-                <form action="{{ url_for('user_information') }}" method="post">
-                    {{ form.hidden_tag() }}
-                    <fieldset class="form-group">
-                        <legend class="border-bottom mb-4">User Credentials</legend>
-                        <div class="form-group">
-                            {{ form.email.label(class="form-control-label") }}
-                            {% if form.email.errors %}
-                                {{ form.email(class="form-control form-control-lg is_invalid") }}
-                                {% for error in form.email.errors %}
-                                    <div class="text-danger">
-                                        <span>{{ error }}</span>
-                                    </div>
-                                {% endfor %}
-                            {% else %}
-                                {{ form.email(class="form-control form-control-lg") }}
-                            {% endif %}
-                        </div>
-
-
-                        <div class="form-group">
-                            {{ form.password.label(class="form-control-label") }}
-                            {% if form.password.errors %}
-                                {{ form.password(class="form-control form-control-lg is_invalid") }}
-                                {% for error in form.password.errors %}
-                                    <div class="text-danger">
-                                        <span>{{ error }}</span>
-                                    </div>
-                                {% endfor %}
-                            {% else %}
-                                {{ form.password(class="form-control form-control-lg") }}
-                            {% endif %}
-                        </div>
-
-                    </fieldset>
-
-                    <div class="form-group">
-                        {{ form.submit(class="btn btn-primary btn-m btn-block", style="background-color: #C20707")}}
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">User Credentials</h3>
                     </div>
-                </form>
-            </div>
-            <div class="col-4 mt-4">
-                <div>
-                    <ul>
-                        <li class="sidebar-links"><a  href="{{ url_for('company_information') }}">company information</a></li>
-                        <li class="sidebar-links"><a  href="{{ url_for('user_information') }}">User information</a></li>
-                    </ul>
+                    {% with messages = get_flashed_messages(with_categories=False) %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert-success">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <form action="{{ url_for('user_information') }}" method="post">
+                        {{ form.hidden_tag() }}
+                        <div class="box-body">
+                            <fieldset class="form-group">
+                                <div class="form-group">
+                                    {{ form.email.label(class="form-control-label") }}
+                                    {% if form.email.errors %}
+                                        {{ form.email(class="form-control form-control-lg is_invalid") }}
+                                        {% for error in form.email.errors %}
+                                            <div class="text-danger">
+                                                <span>{{ error }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        {{ form.email(class="form-control form-control-lg") }}
+                                    {% endif %}
+                                </div>
+
+
+                                <div class="form-group">
+                                    {{ form.password.label(class="form-control-label") }}
+                                    {% if form.password.errors %}
+                                        {{ form.password(class="form-control form-control-lg is_invalid") }}
+                                        {% for error in form.password.errors %}
+                                            <div class="text-danger">
+                                                <span>{{ error }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        {{ form.password(class="form-control form-control-lg") }}
+                                    {% endif %}
+                                </div>
+
+                            </fieldset>
+                        </div>
+                        <div class="box-footer">
+                            <div class="form-group">
+                                {{ form.submit(class="btn btn-primary btn-m btn-block", style="background-color: #C20707")}}
+                            </div>
+                        </div>
+                    </form>
                 </div>
+            </div>
+            <div class="col-4">
+               <div class="box">
+                    <div>
+                        <ul>
+                            <li class="sidebar-links"><a  href="{{ url_for('company_information') }}">company information</a></li>
+                            <li class="sidebar-links"><a  href="{{ url_for('user_information') }}">User information</a></li>
+                        </ul>
+                    </div>
+               </div>
             </div>
         </div>
     </div>
