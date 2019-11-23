@@ -32,8 +32,8 @@
     <tr>
       <th scope="row">
           <a href="{{ url_for('load_tender', tender_id=tender.id) }}" data-toggle="tooltip" data-placement="bottom" title="edit tender"><i class="far fa-edit"></i></a>&nbsp;
-          <a href="{{ url_for('delete_tender', tender_id=tender.id) }}" data-toggle="tooltip" data-placement="bottom" title="delete tender"><i class="fas fa-trash-alt" onclick="confirm('do you really want to delete this tender?')"></i></a>
-          <a href="{{ url_for('close_tender', tender_id=tender.id) }}" data-toggle="tooltip" data-placement="bottom" title="close tender"><i class="fas fa-lock"></i></a>
+          <a href="{{ url_for('delete_tender', tender_id=tender.id) }}" data-toggle="tooltip" data-placement="bottom" title="delete tender"><i class="fas fa-trash-alt" onclick="return confirm('do you really want to delete this tender?')"></i></a>
+          <a href="{{ url_for('close_tender', tender_id=tender.id) }}" data-toggle="tooltip" data-placement="bottom" title="close tender" onclick="return confirm('do you really want to close this tender?')"><i class="fas fa-lock"></i></a>
       </th>
       <td>{{ tender.entity_name }}</td>
       <td>{{ tender.entity_type }}</td>

@@ -1,6 +1,7 @@
 from flask import render_template, url_for, redirect, request, flash, send_file
 from flask_login import login_user, logout_user, login_required, current_user
 from tenderingSystem import app, bcrypt, db
+from tenderingSystem.model import Tenders
 from tenderingSystem.forms import RegisterForm, LoginForm, NewsLetter, UpdateCompanyForm, CompanyForm, UserForm
 from tenderingSystem.helper_functions import get_company_information, return_path
 from tenderingSystem.model import Users, Company
@@ -145,7 +146,12 @@ def download_bds_document(document_name):
 def download_tender_document(document_name):
     return send_file(return_path('tender', document_name))
 
-
+##############################################################################################################
+@app.route('/all-tenders')
+def all_tenders():
+    page = request.args.get("page", 1, type=int)
+    tender = Tenders.query.paginate(page=page, per_page=2)
+    return render_template("others/tenders.html", tenders=tender)
 ##############################################################################################################
 @app.route('/logout')
 @login_required

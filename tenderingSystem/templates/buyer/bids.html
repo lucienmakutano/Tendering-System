@@ -8,6 +8,7 @@
 {% block sidebar %}
     {{ super() }}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/supplier.css') }}">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 {% endblock %}
 
 
@@ -31,7 +32,7 @@
                            <td>{{ tender.title }}</td>
                            <td><a href="{{ url_for('download_bds_document', document_name=tender.bid_document) }}" target="_blank">{{ tender.bid_document }}</a></td>
                            <td>{{ tender.date_submitted }}</td>
-                           <td><a href="#" data-toggle="modal" data-target="#exampleModal">{{ "company_x" }}</a></td>
+                           <td><a href="#" onclick="var company = $.get('/company/information/' + {{ tender.bid_id }})" data-toggle="modal" data-target="#exampleModal">{{ "company_x" }}</a></td>
                        </tr>
                    {% endfor %}
                {% endif %}
@@ -65,7 +66,11 @@
             </button>
           </div>
           <div class="modal-body">
-            ...
+              <p id="name"></p>
+              <p id="type"></p>
+              <p id="address"></p>
+              <p id="email"></p>
+              <p id="phone"></p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -73,4 +78,21 @@
         </div>
       </div>
     </div>
+
+    <script>
+         var name = document.getElementById("name");
+         var type = document.getElementById("type");
+         var address = document.getElementById("address");
+         var email = document.getElementById("email");
+         var phone = document.getElementById("phone");
+
+        company.done(function (company_info) {
+           name.innerHTML = "lucien";
+           type.innerHTML = "lucien";
+           address.innerHTML = "lucien";
+           email.innerHTML = "lucien";
+           phone.innerHTML = "90989099";
+        });
+    </script>
+
 {% endblock %}

@@ -2,33 +2,9 @@
 
 {% block head %}
     {{ super() }}
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses', 'Profit'],
-          ['2014', 1000, 400, 200],
-          ['2015', 1170, 460, 250],
-          ['2016', 660, 1120, 300],
-          ['2017', 1030, 540, 350]
-        ]);
-
-        var options = {
-          chart: {
-            title: 'Company Performance',
-            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-          },
-          bars: 'vertical' // Required for Material Bar Charts.
-        };
-
-        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
-    </script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 {% endblock %}
 
 
@@ -40,6 +16,10 @@
 {% block body %}
     <fieldset class="form-group">
         <legend class="border-bottom mb-4">Here Is The Report Of Your Activities</legend>
+        <select name="" id="filter_result">
+            <option value="bid per tender">Bids per tender</option>
+            <option value="most bid per tender">Tender with the most bids</option>
+        </select>
         <div class="row">
             <div class="col-sm-6">
                 <div class="box">
@@ -51,7 +31,7 @@
                     </div>
                     <div class="box-body">
                         <div class="chart">
-                            <div id="barchart_material" style="width: 480px; height: 380px;"></div>
+                            <div class="ct-chart ct-perfect-fourth"></div>
                         </div>
                     </div>
                 </div>
@@ -75,4 +55,45 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ url_for('static', filename='js/demo.js') }}"></script>
     <!-- page script -->
+
+    <script type="text/javascript">
+            var chart;
+          var tender_per_month = $.get('/buyer/1/graph-data');
+          tender_per_month.done(function (tenders) {
+              var data = {
+              // A labels array that can contain any sort of values
+              labels: ['jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+              // Our series array that contains series objects or in this case series data arrays
+              series: [
+                tenders.tender_per_month
+              ]
+            };
+
+            // Create a new line chart object where as first parameter we pass in a selector
+            // that is resolving to our chart container element. The Second parameter
+            // is the actual data object.
+            chart = new Chartist.Bar('.ct-chart', data);
+      });
+
+
+    function  updateChart() {
+        var newData = $.get('/buyer/1/graph-data');
+
+        newData.done(function (tender) {
+            var data = {
+              // A labels array that can contain any sort of values
+              labels: ['jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+              // Our series array that contains series objects or in this case series data arrays
+              series: [
+                tenders.tender_per_month
+              ]
+            };
+
+            chart.update(data);
+        });
+        
+        
+        $("#filter_result").on('change', updateChart);
+    }
+    </script>
 {% endblock %}

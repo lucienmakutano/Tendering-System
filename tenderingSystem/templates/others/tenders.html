@@ -1,10 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends("layout.html") %}
 
-</body>
-</html>
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/supplier.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Entity name</th>
+                <th scope="col">Entity type</th>
+                <th scope="col">Title</th>
+                <th scope="col">Status</th>
+                <th scope="col">Date published</th>
+                <th scope="col">Date closed</th>
+                <th scope="col">Tender document</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if tenders %}
+                {% for tender in tenders.items %}
+                    <tr>
+                        <td>{{ tender.entity_name }}</td>
+                        <td>{{ tender.entity_type }}</td>
+                        <td>{{ tender.title }}</td>
+                        <td>{{ tender.status }}</td>
+                        <td>{{ tender.date_published }}</td>
+                        <td>{{ tender.date_closed }}</td>
+                        <td>{{ tender.tender_document }}</td>
+                    </tr>
+                {% endfor %}
+
+            {% endif %}
+        </tbody>
+    </table>
+    <ul class="pagination">
+        {% for page_number in tenders.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_number %}
+                {% if tenders.page == page_number %}
+                    <li class="page-item active" aria-current="page">
+                      <a class="page-link" href="{{ url_for("all_tenders", page=page_number) }}">{{ page_number }}<span class="sr-only">(current)</span></a>
+                    </li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for("all_tenders", page=page_number) }}">{{ page_number }}</a></li>
+                {% endif %}
+            {% else %}
+                ...
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock %}

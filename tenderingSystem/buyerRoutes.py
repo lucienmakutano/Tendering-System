@@ -1,9 +1,9 @@
-from flask import render_template, url_for, redirect, request, flash
+from flask import render_template, url_for, redirect, request, flash, jsonify
 from flask_login import login_required
 from tenderingSystem import app, db
 from tenderingSystem.forms import TenderForm, UpdateTenderForm
 from tenderingSystem.helper_functions import save_tender_document, get_company_id, get_company_information
-from tenderingSystem.model import Tenders
+from tenderingSystem.model import Tenders, Company
 
 
 @app.route('/buyer/buyer_home', methods=["GET", "POST"])
@@ -47,7 +47,7 @@ def publish_tender():
             company = get_company_id()
 
             if company:
-                if tender_documents:
+                if date_published < date_closed:
                     document_name = save_tender_document(tender_documents, "tender")
 
                     tender = Tenders(entity_name=entity_name, entity_type=entity_type, title=title,
@@ -155,8 +155,30 @@ def delete_tender(tender_id):
 @app.route('/buyer/report', methods=["GET", "POST"])
 @login_required
 def get_report():
+    tender_dict = dict()
     company = get_company_information()
     if company:
-        return render_template('buyer/report.html', company_name=company.company_name)
+        return render_template('buyer/report.html', company_name=company.company_name, company_id=company.id)
     else:
         return render_template('buyer/report.html')
+
+
+@app.route('/buyer/<int:user_id>/graph-data', methods=["GET"])
+def graph_data(user_id):
+    # tender_per_month = []
+    # AND company = {user_id}
+    # tenders = db.engine.execute(f"SELECT coalesce(COUNT(id), 0) FROM Tenders WHERE company={1}")
+    # for i in range(1, 13):
+    #     tenders = db.engine.execute(f"SELECT coalesce(COUNT(id), 0) FROM Tenders WHERE company={i}")
+    #     tender_per_month.append(tenders)
+
+    # tender_per_month.append(tenders)
+
+    return jsonify({"tender_per_month": [1, 2, 4, 8, 0, 4, 3, 6, 8, 10, 11, 12]})
+
+
+@app.route('/company/information/<int:user_id>')
+def get(user_id):
+    bidder = Company.query.get(user_id)
+
+    return jsonify({"company": [1,2,3,4]})
