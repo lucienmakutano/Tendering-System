@@ -1,6 +1,8 @@
 import os
 from tenderingSystem import app
 import secrets
+from tenderingSystem import db
+from sqlalchemy import extract
 from tenderingSystem.model import Company
 from flask_login import current_user
 
@@ -30,3 +32,13 @@ def get_company_information():
 
 def return_path(sub_directory, file_name):
     return os.path.join(app.root_path, 'uploads/' + sub_directory, file_name)
+
+
+def json_data(database_table, month, *condition):
+    company = get_company_id()
+
+    if company:
+        result = db.session.query(database_table).filter_by(company=company).filter(
+            extract('month', database_table.date_published) == month).count()
+
+    return result

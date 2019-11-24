@@ -32,7 +32,7 @@
                            <td>{{ tender.title }}</td>
                            <td><a href="{{ url_for('download_bds_document', document_name=tender.bid_document) }}" target="_blank">{{ tender.bid_document }}</a></td>
                            <td>{{ tender.date_submitted }}</td>
-                           <td><a href="#" onclick="var company = $.get('/company/information/' + {{ tender.bid_id }})" data-toggle="modal" data-target="#exampleModal">{{ "company_x" }}</a></td>
+                           <td><a href="{{ url_for('bidder_info', bidder_id=tender.bid_poster) }}"  data-toggle="modal" data-target="#exampleModal">{{ "bidder's information" }}</a></td>
                        </tr>
                    {% endfor %}
                {% endif %}
@@ -54,45 +54,49 @@
 
 
 
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Bidder's Information</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-              <p id="name"></p>
-              <p id="type"></p>
-              <p id="address"></p>
-              <p id="email"></p>
-              <p id="phone"></p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    {% if bidder %}
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bidder's Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <p id="name">{{ bidder.company_name }}</p>
+                  <p id="type">{{ bidder.company_type }}</p>
+                  <p id="address">{{ bidder.address }}</p>
+                  <p id="email">{{ bidder.email }}</p>
+                  <p id="phone">{{ bidder.phone_number }}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+    {% endif %}
 
     <script>
-         var name = document.getElementById("name");
-         var type = document.getElementById("type");
-         var address = document.getElementById("address");
-         var email = document.getElementById("email");
-         var phone = document.getElementById("phone");
+        function displayCompany(companyData) {
+            var name = document.getElementById("name");
+            var type = document.getElementById("type");
+            var address = document.getElementById("address");
+            var email = document.getElementById("email");
+            var phone = document.getElementById("phone");
 
-        company.done(function (company_info) {
-           name.innerHTML = "lucien";
-           type.innerHTML = "lucien";
-           address.innerHTML = "lucien";
-           email.innerHTML = "lucien";
-           phone.innerHTML = "90989099";
-        });
+            console.log(companyData);
+            companyData.done(function (company_info) {
+                name.innerHTML = company_info.company;
+                type.innerHTML = company_info.company;
+                address.innerHTML = company_info.company;
+                email.innerHTML = company_info.company;
+                phone.innerHTML = company_info.company;
+            });
+        }
     </script>
 
 {% endblock %}

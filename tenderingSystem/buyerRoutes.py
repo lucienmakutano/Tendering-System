@@ -2,8 +2,8 @@ from flask import render_template, url_for, redirect, request, flash, jsonify
 from flask_login import login_required
 from tenderingSystem import app, db
 from tenderingSystem.forms import TenderForm, UpdateTenderForm
-from tenderingSystem.helper_functions import save_tender_document, get_company_id, get_company_information
-from tenderingSystem.model import Tenders, Company
+from tenderingSystem.helper_functions import save_tender_document, get_company_id, get_company_information, json_data
+from tenderingSystem.model import Tenders, Company, Bid
 
 
 @app.route('/buyer/buyer_home', methods=["GET", "POST"])
@@ -74,6 +74,19 @@ def view_bids():
         tenders = db.engine.execute(f"SELECT * FROM bidTender JOIN Bid ON bidTender.bid_id=Bid.id JOIN Tenders "
                                     f"ON bidTender.tender_id=Tenders.id WHERE company={company.id}")
         return render_template('buyer/bids.html', company_name=company.company_name, tenders=tenders)
+    return render_template('buyer/bids.html')
+
+
+@app.route('/buyer/view_bids/bidder/<int:bidder_id>')
+@login_required
+def bidder_info(bidder_id):
+    bidder = Company.query.get(1)
+    company = get_company_information()
+    if company:
+        tenders = db.engine.execute(f"SELECT * FROM bidTender JOIN Bid ON bidTender.bid_id=Bid.id JOIN Tenders "
+                                    f"ON bidTender.tender_id=Tenders.id WHERE company={company.id}")
+        return render_template('buyer/bids.html', company_name=company.company_name, tenders=tenders, bidder=bidder)
+
     return render_template('buyer/bids.html')
 
 
@@ -165,20 +178,37 @@ def get_report():
 
 @app.route('/buyer/<int:user_id>/graph-data', methods=["GET"])
 def graph_data(user_id):
-    # tender_per_month = []
-    # AND company = {user_id}
-    # tenders = db.engine.execute(f"SELECT coalesce(COUNT(id), 0) FROM Tenders WHERE company={1}")
-    # for i in range(1, 13):
-    #     tenders = db.engine.execute(f"SELECT coalesce(COUNT(id), 0) FROM Tenders WHERE company={i}")
-    #     tender_per_month.append(tenders)
+    tender_per_month = []
+    jan = json_data(Tenders, 1)
+    tender_per_month.append(jan)
+    feb = json_data(Tenders, 2)
+    tender_per_month.append(feb)
+    mar = json_data(Tenders, 3)
+    tender_per_month.append(mar)
+    apr = json_data(Tenders, 4)
+    tender_per_month.append(apr)
+    may = json_data(Tenders, 5)
+    tender_per_month.append(may)
+    june = json_data(Tenders, 6)
+    tender_per_month.append(june)
+    jul = json_data(Tenders, 7)
+    tender_per_month.append(jul)
+    aug = json_data(Tenders, 8)
+    tender_per_month.append(aug)
+    sept = json_data(Tenders, 9)
+    tender_per_month.append(sept)
+    october = json_data(Tenders, 10)
+    tender_per_month.append(october)
+    nov = json_data(Tenders, 11)
+    tender_per_month.append(nov)
+    dec = json_data(Tenders, 12)
+    tender_per_month.append(dec)
 
     # tender_per_month.append(tenders)
 
-    return jsonify({"tender_per_month": [1, 2, 4, 8, 0, 4, 3, 6, 8, 10, 11, 12]})
+    return jsonify({"tender_per_month": tender_per_month})
 
 
-@app.route('/company/information/<int:user_id>')
-def get(user_id):
-    bidder = Company.query.get(user_id)
-
-    return jsonify({"company": [1,2,3,4]})
+@app.route('/')
+def bid_per_tender():
+    pass
