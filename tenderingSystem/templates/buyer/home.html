@@ -166,49 +166,33 @@
                 <div class="box-header with-border"><h3 class="box-title">Bids</h3></div>
                 <div class="box">
                     <div class="box-header with-border"><h3 class="box-title">Closed tenders</h3></div>
-                    <div class="box-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>status</th>
-                                    <th>Date published</th>
-                                    <th>Date closed</th>
-                                    <th>Bid document</th>
-                                    <th>Date submitted</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% if closed_tenders %}
-                                    {% for open_tender in closed_tenders.items %}
-                                        <tr>
-                                            <td>{{ open_tender.title }}</td>
-                                            <td>{{ open_tender.status }}</td>
-                                            <td>{{ open_tender.date_published }}</td>
-                                            <td>{{ open_tender.date_closed }}</td>
-                                            <td>{{ open_tender.date_submitted }}</td>
-                                            <td><a href="{{ url_for('download_bds_document', document_name=open_tender.bid_document) }}" target="_blank">{{ open_tender.bid_document }}</a></td>
-                                        </tr>
-                                    {% endfor %}
-                                {% endif %}
-                            </tbody>
+                        <div class="box-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>status</th>
+                                        <th>Date published</th>
+                                        <th>Date closed</th>
+                                        <th>Bid document</th>
+                                        <th>Date submitted</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if bids %}
+                                        {% for bid in bids %}
+                                            <tr>
+                                                <td>{{ bid.title }}</td>
+                                                <td>{{ bid.status }}</td>
+                                                <td>{{ bid.date_published }}</td>
+                                                <td>{{ bid.date_closed }}</td>
+                                                <td>{{ bid.date_submitted }}</td>
+                                                <td><a href="{{ url_for('download_bds_document', document_name=bid.bid_document) }}" target="_blank">{{ bid.bid_document }}</a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                </tbody>
                             </table>
-                            </div>
-                            <div class="box-footer clearfix">
-                                  <ul class="pagination pagination-sm no-margin pull-right">
-                                      {% for page_number in closed_tenders.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-                                          {% if page_number %}
-                                              {% if closed_tenders.page == page_number %}
-                                                  <li class="page-item"><a class="page-link btn btn-info" href="{{ url_for('buyer_home', closed_tender=page_number) }}">{{ page_number }}</a></li>
-                                              {% else %}
-                                                  <li class="page-item"><a class="page-link" href="{{ url_for('buyer_home', closed_tender=page_number) }}">{{ page_number }}</a></li>
-                                              {% endif %}
-                                          {% else %}
-                                              ...
-                                          {% endif %}
-                                      {% endfor %}
-                                  </ul>
-                            </div>
                         </div>
                  </div>
             </div>

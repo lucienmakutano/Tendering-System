@@ -6,13 +6,13 @@ from tenderingSystem import app, db
 from tenderingSystem.forms import UploadBidForm
 from tenderingSystem.helper_functions import save_tender_document, get_company_information
 from tenderingSystem.model import Tenders, Bid
-from sqlalchemy_serializer import serializer
 
 
 @app.route('/supplier/supplier_home', methods=["GET", "POST"])
 @login_required
 def supplier_home():
-    tenders = Tenders.query.filter_by(is_delete=False, status="open").all()
+    page = request.args.get("page", 1, type=int)
+    tenders = Tenders.query.filter_by(is_delete=False, status="open").paginate(page=page, per_page=10)
     company = get_company_information()
     if company:
         return render_template('supplier/home.html', tenders=tenders, company_name=company.company_name)

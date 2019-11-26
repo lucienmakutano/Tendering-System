@@ -17,20 +17,21 @@ def buyer_home():
         .paginate(page=closed_tender, per_page=5)
     open_tenders = Tenders.query.filter_by(company=0, is_delete=False, status="open") \
         .paginate(page=open_tender, per_page=6)
-    bids = ""
+    bids = Bid.query.filter_by(id=0)
 
     if company:
         closed_tenders = Tenders.query.filter_by(company=company.id, is_delete=False, status="closed") \
             .paginate(page=closed_tender, per_page=5)
         open_tenders = Tenders.query.filter_by(company=company.id, is_delete=False, status="open") \
             .paginate(page=open_tender, per_page=6)
-        bids = ""
+        bids = db.engine.execute(f"SELECT * FROM bidTender JOIN Bid ON bidTender.bid_id=Bid.id JOIN Tenders "
+                                 f"ON bidTender.tender_id=Tenders.id WHERE company={company.id}")
 
         if request.method == "GET":
             return render_template('buyer/home.html', company_name=company.company_name
-                                   , closed_tenders=closed_tenders, open_tenders=open_tenders)
+                                   , closed_tenders=closed_tenders, open_tenders=open_tenders, bids=bids)
     else:
-        return render_template('buyer/home.html', closed_tenders=closed_tenders, open_tenders=open_tenders)
+        return render_template('buyer/home.html', closed_tenders=closed_tenders, open_tenders=open_tenders, bids=bids)
 
 
 @app.route('/buyer/publish_tender', methods=["GET", "POST"])
@@ -222,6 +223,4 @@ def bid_per_tender():
 
 @app.route('/buyer/company/information/bidder/<int:bidder_id>')
 def get_bidder(bidder_id):
-
     return Company.json_first(id=bidder_id)
-

@@ -31,7 +31,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for tender in tenders %}
+                {% for tender in tenders.items %}
                     <tr>
                         <th scope="row">{{ 1 }}</th>
                         <td>{{ tender.entity_type }}</td>
@@ -45,9 +45,23 @@
                 {% endfor %}
             </tbody>
         </table>
-        <div id="test">
-
-        </div>
+        <div class="box-footer clearfix">
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        {% for page_number in tenders.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                            {% if page_number %}
+                                {% if tenders.page == page_number %}
+                                    <li class="page-item"><a class="btn btn-primary btn-sm"
+                                        href="{{ url_for('supplier_home', page=page_number) }}">{{ page_number }}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="btn btn-outline-primary btn-sm"
+                                        href="{{ url_for('supplier_home', page=page_number) }}">{{ page_number }}</a></li>
+                                {% endif %}
+                            {% else %}
+                                ...
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
 
         <div class="footer">
             <div class="footer-top">

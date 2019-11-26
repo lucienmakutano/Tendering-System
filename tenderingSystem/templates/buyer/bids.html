@@ -55,8 +55,7 @@
 
 
 
-    {% if bidder %}
-        <!-- Modal -->
+    <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -67,11 +66,11 @@
                 </button>
               </div>
               <div class="modal-body">
-                  <p id="name">{{ bidder.company_name }}</p>
-                  <p id="type">{{ bidder.company_type }}</p>
-                  <p id="address">{{ bidder.address }}</p>
-                  <p id="email">{{ bidder.email }}</p>
-                  <p id="phone">{{ bidder.phone_number }}</p>
+                  <p class="text-bold" id="name"></p>
+                  <p class="text-bold" id="type"></p>
+                  <p class="text-bold" id="address"></p>
+                  <p class="text-bold" id="email"></p>
+                  <p class="text-bold" id="phone"></p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -79,21 +78,35 @@
             </div>
           </div>
         </div>
-    {% endif %}
 
     <script>
-        function getBidder(company_id) {
-            var request = new XMLHttpRequest();
+        function fillModal(result) {
+            var name = document.getElementById('name');
+            var type = document.getElementById('type');
+            var address = document.getElementById('address');
+            var email = document.getElementById('email');
+            var phone = document.getElementById('phone');
 
-            var url = "/buyer/company/information/bidder/" + company_id;
+
+            name.innerHTML = "Company name: " + result.company_name;
+            type.innerHTML = "Company type: " + result.company_type;
+            address.innerHTML = "Company address: " + result.address;
+            email.innerHTML = "Company email: " + result.email;
+            phone.innerHTML = "Telephone number: " + result.phone_number;
+        }
+
+        function getBidder(company_id) {
+            const request = new XMLHttpRequest();
+
+            const url = "/buyer/company/information/bidder/" + company_id;
 
             request.open("GET", url);
 
             request.onreadystatechange = function () {
-                if (request.readyState == 4 && request.status == 200){
-                    var result = request.responseText;
-                    alert(result[0].address);
-                    return true;
+                if (request.readyState === 4 && request.status === 200){
+                    {#alert(request.responseText);#}
+                    const result = JSON.parse(request.responseText);
+                    fillModal(result);
                 }
             };
 
