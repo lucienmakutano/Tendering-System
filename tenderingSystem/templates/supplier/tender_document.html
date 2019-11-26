@@ -29,9 +29,9 @@
                                     {% endfor %}
                                 {% endif %}
                             {% endwith %}
+                            <legend class="border-bottom mb-4">Found the tender you are looking for?</legend>
                             <form method="post" action="{{ url_for('tender_document', tender_id=tender.id) }}" enctype="multipart/form-data">
                                 {{ form.hidden_tag() }}
-                                <legend class="border-bottom mb-4">Found the tender you are looking for?</legend>
                                 <div class="form-group">
                                     {{ form.bid_document.label(class="form-control-label") }}
                                     {% if form.bid_document.errors %}

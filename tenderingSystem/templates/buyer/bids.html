@@ -32,7 +32,8 @@
                            <td>{{ tender.title }}</td>
                            <td><a href="{{ url_for('download_bds_document', document_name=tender.bid_document) }}" target="_blank">{{ tender.bid_document }}</a></td>
                            <td>{{ tender.date_submitted }}</td>
-                           <td><a href="{{ url_for('bidder_info', bidder_id=tender.bid_poster) }}"  data-toggle="modal" data-target="#exampleModal">{{ "bidder's information" }}</a></td>
+                           <td><a href="{{ url_for('bidder_info', bidder_id=tender.bid_poster) }}"  onclick="javascript:getBidder({{ tender.bid_poster }})"
+                                  data-toggle="modal" data-target="#exampleModal">{{ "bidder's information" }}</a></td>
                        </tr>
                    {% endfor %}
                {% endif %}
@@ -81,22 +82,24 @@
     {% endif %}
 
     <script>
-        function displayCompany(companyData) {
-            var name = document.getElementById("name");
-            var type = document.getElementById("type");
-            var address = document.getElementById("address");
-            var email = document.getElementById("email");
-            var phone = document.getElementById("phone");
+        function getBidder(company_id) {
+            var request = new XMLHttpRequest();
 
-            console.log(companyData);
-            companyData.done(function (company_info) {
-                name.innerHTML = company_info.company;
-                type.innerHTML = company_info.company;
-                address.innerHTML = company_info.company;
-                email.innerHTML = company_info.company;
-                phone.innerHTML = company_info.company;
-            });
+            var url = "/buyer/company/information/bidder/" + company_id;
+
+            request.open("GET", url);
+
+            request.onreadystatechange = function () {
+                if (request.readyState == 4 && request.status == 200){
+                    var result = request.responseText;
+                    alert(result[0].address);
+                    return true;
+                }
+            };
+
+            request.send();
         }
+
     </script>
 
 {% endblock %}

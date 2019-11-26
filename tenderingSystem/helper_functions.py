@@ -42,3 +42,9 @@ def json_data(database_table, month, *condition):
             extract('month', database_table.date_published) == month).count()
 
     return result
+
+
+def check_duplicates(table_name, name_to_check_for):
+    company = table_name.query.filter_by(company_name=name_to_check_for)
+
+    return company

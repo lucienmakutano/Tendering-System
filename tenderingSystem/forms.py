@@ -39,7 +39,7 @@ class TenderForm(FlaskForm):
     entity_name = StringField("Entity name", validators=[DataRequired()])
     entity_type = StringField("Entity type", validators=[DataRequired()])
     title = StringField("Title", validators=[DataRequired()])
-    status = StringField("Status", validators=[DataRequired(), length(min=4, max=8)])
+    status = StringField("Status", validators=[DataRequired()])
     date_published = DateTimeLocalField("Date published", format='%Y-%m-%dT%H:%M')
     date_closed = DateTimeLocalField("Closing date", format='%Y-%m-%dT%H:%M')
     tender_document = FileField("Tender document",

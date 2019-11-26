@@ -4,6 +4,7 @@
     {{ super() }}
     <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
     <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 {% endblock %}
 
@@ -75,27 +76,37 @@
       });
 
 
-    function  BidsPerTender() {
-        var newData = $.get('/buyer/bid-per-tender');
+    function  mostBidsPerTender() {
+        {#var newData = $.get('/buyer/1/graph-data');#}
 
-        newData.done(function (tender) {
+        tender_per_month.done(function (tender) {
             var data = {
               // A labels array that can contain any sort of values
               labels: ['jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
               // Our series array that contains series objects or in this case series data arrays
               series: [
-                tenders.bid_per_tender
+                tender.tender_per_month
               ]
             };
 
             // Create a new line chart object where as first parameter we pass in a selector
             // that is resolving to our chart container element. The Second parameter
             // is the actual data object.
-            chart = new Chartist.Pie('.ct-chart', data);
+            new Chartist.Line('.ct-chart', data);
         });
-        
-        
-        $("#filter_result").on('change', BidsPerTender);
     }
+
+    $(document).ready(function () {
+          $("#filter_result").change(function () {
+
+              var ajax_call = $("#filter_result").val();
+
+              if (ajax_call === "most bid per tender"){
+                  mostBidsPerTender();
+              }
+
+          });
+       });
+
     </script>
 {% endblock %}

@@ -3,17 +3,14 @@
     margin: 0;
     font-size: 18px;
 }
-.body{
-    display: grid;
-    grid-template-rows: 590px auto auto 200px 200px;
+.above-the-fold{
+    background: linear-gradient(135deg, #0079bf, #5067c5);
+}
+.above-the-fold div img{
+    width: 400px;
+    padding-top: 50px;
 }
 
-.above-the-fold{
-    text-align: center;
-}
-.sub-head-line, .head-line{
-    color: #C20707;
-}
 
 .head-line p{
     margin-top: 80px;
@@ -24,7 +21,6 @@
 .sub-head-line{
     font-size: 2rem;
     font-weight: 500;
-    text-transform: capitalize;
 }
 .call-for-action{
     margin-top: 40px;
@@ -33,30 +29,30 @@
 .call-for-action button{
     width: 20rem;
     text-transform: capitalize;
+    color:  #0079bf;
 }
-.benefits{
-    background-color: #E1DFDF;
+.call-for-action button:hover{
+    background: linear-gradient(135deg, #0079bf, #5067c5);
+    color: #fff;
+    transition: all .3s ease 0s;
+    border: none;
 }
 .footer{
     width: 100%;
 }
-.benefits{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    justify-content: center;
-    align-items: center;
-    grid-column-gap: 30px;
-    grid-row-gap: 50px;
-    padding: 0 20px;
+.col-6.mx-auto.col-md-6.order-md-1{
+    margin: 50px 50px 50px 50px;
+    padding: 100px 100px;
+    border: 1px solid #0079bf;
 }
-.benefit img{
-    width: 100%;
+div img{
+    width: 70%;
     border: none;
-    box-shadow: #888888;
+    /* box-shadow: #888888; */
 }
 h2, p{
     text-align: center;
-    color: #C20707;
+    color:  #0079bf;
 }
 .link li a img{
     height: 30px;

@@ -1,6 +1,10 @@
 from tenderingSystem import db, login_manager
 from datetime import datetime
 from flask_login import UserMixin
+from sqlalchemy_serializer import SerializerMixin
+from flask_serialize import FlaskSerializeMixin
+
+FlaskSerializeMixin.db = db
 
 
 @login_manager.user_loader
@@ -20,7 +24,7 @@ class Users(db.Model, UserMixin):
         return f"Users('{self.email}', '{self.user_type}')"
 
 
-class Company(db.Model):
+class Company(FlaskSerializeMixin, db.Model):
     id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)
     company_name = db.Column(db.String(100), nullable=False, unique=True)
     phone_number = db.Column(db.String(15), nullable=False)
@@ -29,6 +33,22 @@ class Company(db.Model):
     user = db.Column(db.INTEGER, db.ForeignKey("users.id"), nullable=False, unique=True)
     tender_publisher = db.relationship("Tenders", backref="publisher", lazy=True)
     bid_publisher = db.relationship("Bid", backref="bid_publisher", lazy=True)
+
+    # serializer fields
+    create_fields = update_fields = ['company_name', 'phone_number', 'address', 'company_type']
+
+    # checks if Flask-Serialize can delete
+    def can_delete(self):
+        if self.value == '1234':
+            raise Exception('Deletion not allowed.  Magic value!')
+
+    # checks if Flask-Serialize can create/update
+    def verify(self, create=False):
+        if not self.key or len(self.key) < 1:
+            raise Exception('Missing key')
+
+        if not self.setting_type or len(self.setting_type) < 1:
+            raise Exception('Missing setting type')
 
     def __repr__(self):
         return f"Company('{self.company_name}', '{self.address}', '{self.company_type}')"
@@ -42,7 +62,7 @@ bidTender = db.Table("bidTender",
                      )
 
 
-class Tenders(db.Model):
+class Tenders(FlaskSerializeMixin, db.Model):
     id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)
     entity_name = db.Column(db.String(50), nullable=False)
     entity_type = db.Column(db.String(30), nullable=False)
@@ -56,6 +76,22 @@ class Tenders(db.Model):
     bidTender = db.relationship('Bid', secondary=bidTender, lazy='dynamic',
                                 backref=db.backref('tenders', lazy=True))
 
+    # serializer fields
+    create_fields = update_fields = ['entity_type', 'entity_name', 'title', 'status', 'date_published', 'date_closed']
+
+    # checks if Flask-Serialize can delete
+    def can_delete(self):
+        if self.value == '1234':
+            raise Exception('Deletion not allowed.  Magic value!')
+
+    # checks if Flask-Serialize can create/update
+    def verify(self, create=False):
+        if not self.key or len(self.key) < 1:
+            raise Exception('Missing key')
+
+        if not self.setting_type or len(self.setting_type) < 1:
+            raise Exception('Missing setting type')
+
     def __repr__(self):
         return f"Tenders('{self.entity_name}', '{self.title}', '{self.status}', '{self.date_published}'," \
                f" '{self.date_closed}', '{self.tender_document}', '{self.is_delete}')"
@@ -65,7 +101,7 @@ class Bid(db.Model):
     id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)
     bid_document = db.Column(db.String(50), nullable=False)
     date_submitted = db.Column(db.DATETIME, default=datetime.utcnow())
-    # is_deleted = db.Column(bd.Boolean, default=False)
+    is_deleted = db.Column(db.Boolean, default=False)
     bid_poster = db.Column(db.INTEGER, db.ForeignKey('company.id'))
 
     def __repr__(self):

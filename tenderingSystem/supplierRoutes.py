@@ -1,10 +1,12 @@
-from flask import render_template, url_for, redirect, request, flash
+from flask import render_template, url_for, redirect, request, flash, jsonify
 from datetime import *
+from sqlalchemy import or_
 from flask_login import login_required
 from tenderingSystem import app, db
 from tenderingSystem.forms import UploadBidForm
 from tenderingSystem.helper_functions import save_tender_document, get_company_information
 from tenderingSystem.model import Tenders, Bid
+from sqlalchemy_serializer import serializer
 
 
 @app.route('/supplier/supplier_home', methods=["GET", "POST"])
@@ -59,3 +61,15 @@ def my_bids():
                                  f"On bidTender.tender_id=Tenders.id WHERE bid_poster={company.id}")
         return render_template('supplier/myBids.html', bids=bids)
     return render_template('supplier/myBids.html')
+
+
+@app.route('/supplier/search-tender/<string:keyword>', methods=["GET"])
+def search(keyword):
+    tenders = Tenders.query.filter_by(is_delete=False, status="open").filter(or_(Tenders.entity_name == keyword,
+                                                                                 Tenders.entity_type == keyword,
+                                                                                 Tenders.title == keyword,
+                                                                                 Tenders.status == keyword,
+                                                                                 Tenders.date_closed == keyword,
+                                                                                 Tenders.date_published == keyword))\
+        .all()
+    return Tenders.json_list(tenders)

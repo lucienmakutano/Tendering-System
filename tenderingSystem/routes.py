@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from tenderingSystem import app, bcrypt, db
 from tenderingSystem.model import Tenders
 from tenderingSystem.forms import RegisterForm, LoginForm, NewsLetter, UpdateCompanyForm, CompanyForm, UserForm
-from tenderingSystem.helper_functions import get_company_information, return_path
+from tenderingSystem.helper_functions import get_company_information, return_path, check_duplicates
 from tenderingSystem.model import Users, Company
 
 
@@ -85,13 +85,16 @@ def company_information():
             phone = form.phone_number.data
             address = form.address.data
 
-            company = Company(company_name=company_name, company_type=company_type,
-                              phone_number=phone, address=address, user=current_user.id)
-            db.session.add(company)
-            db.session.commit()
-            flash(f"welcome {company_name}. we are glad to have you here. ")
-            return redirect(url_for('company_information'))
-    return render_template('buyer/company_info.html', form=form, company_name=company.company_name)
+            check_company = check_duplicates(Company, company_name)
+
+            if check_company:
+                company = Company(company_name=company_name, company_type=company_type,
+                                  phone_number=phone, address=address, user=current_user.id)
+                db.session.add(company)
+                db.session.commit()
+                flash(f"welcome {company_name}. we are glad to have you here. ")
+                return redirect(url_for('company_information'))
+    return render_template('company_info.html', form=form, company_name=company.company_name)
 
 
 ##########################################################################################################
@@ -112,6 +115,7 @@ def update_company_information():
             flash("your information was updated successfully", "success")
             return redirect(url_for('company_information'))
     return render_template('company_info.html', company=company, update_form=form)
+
 
 ###########################################################################################################
 @app.route('/account/user_information', methods=["GET", "POST"])
@@ -146,13 +150,16 @@ def download_bds_document(document_name):
 def download_tender_document(document_name):
     return send_file(return_path('tender', document_name))
 
+
 ##############################################################################################################
 @app.route('/all-tenders')
 def all_tenders():
     page = request.args.get("page", 1, type=int)
     tender = Tenders.query.paginate(page=page, per_page=2)
     return render_template("others/tenders.html", tenders=tender)
-##############################################################################################################
+
+
+#############################################################################################################
 @app.route('/logout')
 @login_required
 def logout():

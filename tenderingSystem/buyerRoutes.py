@@ -12,17 +12,25 @@ def buyer_home():
     closed_tender = request.args.get('closed_tender', 1, type=int)
     open_tender = request.args.get('open_tender', 1, type=int)
     company = get_company_information()
-    closed_tenders = Tenders.query.filter_by(company=company.id, is_delete=False, status="closed") \
+
+    closed_tenders = Tenders.query.filter_by(company=0, is_delete=False, status="closed") \
         .paginate(page=closed_tender, per_page=5)
-    open_tenders = Tenders.query.filter_by(company=company.id, is_delete=False, status="open") \
+    open_tenders = Tenders.query.filter_by(company=0, is_delete=False, status="open") \
         .paginate(page=open_tender, per_page=6)
     bids = ""
+
     if company:
+        closed_tenders = Tenders.query.filter_by(company=company.id, is_delete=False, status="closed") \
+            .paginate(page=closed_tender, per_page=5)
+        open_tenders = Tenders.query.filter_by(company=company.id, is_delete=False, status="open") \
+            .paginate(page=open_tender, per_page=6)
+        bids = ""
+
         if request.method == "GET":
             return render_template('buyer/home.html', company_name=company.company_name
                                    , closed_tenders=closed_tenders, open_tenders=open_tenders)
     else:
-        return render_template('buyer/home.html')
+        return render_template('buyer/home.html', closed_tenders=closed_tenders, open_tenders=open_tenders)
 
 
 @app.route('/buyer/publish_tender', methods=["GET", "POST"])
@@ -204,11 +212,16 @@ def graph_data(user_id):
     dec = json_data(Tenders, 12)
     tender_per_month.append(dec)
 
-    # tender_per_month.append(tenders)
-
     return jsonify({"tender_per_month": tender_per_month})
 
 
-@app.route('/')
+@app.route('/buyer/bid-per-tender')
 def bid_per_tender():
-    pass
+    return ""
+
+
+@app.route('/buyer/company/information/bidder/<int:bidder_id>')
+def get_bidder(bidder_id):
+
+    return Company.json_first(id=bidder_id)
+

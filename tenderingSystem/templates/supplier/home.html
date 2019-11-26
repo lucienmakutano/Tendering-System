@@ -1,14 +1,19 @@
 {% extends('supplier/layout.html') %}
 {% block head %}
     {{ super() }}
- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/supplier.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/supplier.css') }}">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 {% endblock %}
 {% block content %}
     <div class="container">
         <div class="search-bar">
-            <form method="GET" action="search" class="search">
-                <input name="search here" placeholder="search here" id="input">
-                <button name="search" id="search_btn" >search</button>
+            <form class="search">
+                <input name="search-here" placeholder="search here" id="input">
+                <button type="button" name="search" id="search_btn" onclick="javascript:getTender(document.getElementById('input').value)">search</button>
             </form>
         </div>
 
@@ -16,8 +21,8 @@
             <thead class="thead-dark">
                 <tr class="table_name">
                     <th scope="col">#</th>
-                    <th scope="col">Entity name</th>
                     <th scope="col">Entity type</th>
+                    <th scope="col">Entity name</th>
                     <th scope="col">Title</th>
                     <th scope="col">Status</th>
                     <th scope="col">Date published</th>
@@ -29,8 +34,8 @@
                 {% for tender in tenders %}
                     <tr>
                         <th scope="row">{{ 1 }}</th>
-                        <td>{{ tender.entity_name }}</td>
                         <td>{{ tender.entity_type }}</td>
+                        <td>{{ tender.entity_name }}</td>
                         <td>{{ tender.title }}</td>
                         <td>{{ tender.status }}</td>
                         <td>{{ tender.date_published }}</td>
@@ -40,6 +45,9 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div id="test">
+
+        </div>
 
         <div class="footer">
             <div class="footer-top">
@@ -49,4 +57,27 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function getTender(keyword) {
+            var request = new XMLHttpRequest();
+
+            var url = "/supplier/search-tender/" + keyword;
+            
+            request.open("GET", url);
+
+            {#request.setRequestHeader('content-type', 'application/x-www-form-urlencoded');#}
+            
+            request.onreadystatechange = function () {
+                if (request.readyState == 4 && request.status == 200){
+                    var result = request.responseText;
+                    alert(result);
+                    return true;
+                }
+            };
+
+            request.send();
+        }
+
+    </script>
 {% endblock %}

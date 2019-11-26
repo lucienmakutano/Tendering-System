@@ -17,9 +17,9 @@
 <table class="table">
   <thead class="thead-light">
     <tr>
-      <th scope="col">#</th>
-        <th scope="col">Entity name</th>
+        <th scope="col">#</th>
         <th scope="col">Entity type</th>
+        <th scope="col">Entity name</th>
         <th scope="col">Title</th>
         <th scope="col">Status</th>
         <th scope="col">Date published</th>
@@ -35,8 +35,8 @@
           <a href="{{ url_for('delete_tender', tender_id=tender.id) }}" data-toggle="tooltip" data-placement="bottom" title="delete tender"><i class="fas fa-trash-alt" onclick="return confirm('do you really want to delete this tender?')"></i></a>
           <a href="{{ url_for('close_tender', tender_id=tender.id) }}" data-toggle="tooltip" data-placement="bottom" title="close tender" onclick="return confirm('do you really want to close this tender?')"><i class="fas fa-lock"></i></a>
       </th>
-      <td>{{ tender.entity_name }}</td>
       <td>{{ tender.entity_type }}</td>
+      <td>{{ tender.entity_name }}</td>
       <td>{{ tender.title }}</td>
       <td>{{ tender.status }}</td>
       <td>{{ tender.date_published }}</td>
@@ -62,20 +62,6 @@
               <div class="modal-body">
                   <form action="{{ url_for('load_tender', tender_id=editable_tenders.id) }}" method="post" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
-                <div class="form-group">
-                    {{ form.entity_name.label(class="form-control-label") }}
-
-                    {% if  form.entity_name.errors %}
-                        {{ form.entity_name(class="form-control form-control-m is-invalid", autocomplete="off", value=editable_tenders.entity_name) }}
-                        {% for error in form.entity_name.errors %}
-                            <div class="text-danger">
-                                <span>{{ error }}</span>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        {{ form.entity_name(class="form-control form-control-m", autocomplete="off", value=editable_tenders.entity_name) }}
-                    {% endif %}
-                </div>
 
                 <div class="form-group">
                     {{ form.entity_type.label(class="form-control-label") }}
@@ -91,6 +77,24 @@
                         {{ form.entity_type(class="form-control form-control-m", autocomplete="off", value=editable_tenders.entity_type) }}
                     {% endif %}
                 </div>
+
+
+
+                  <div class="form-group">
+                    {{ form.entity_name.label(class="form-control-label") }}
+
+                    {% if  form.entity_name.errors %}
+                        {{ form.entity_name(class="form-control form-control-m is-invalid", autocomplete="off", value=editable_tenders.entity_name) }}
+                        {% for error in form.entity_name.errors %}
+                            <div class="text-danger">
+                                <span>{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.entity_name(class="form-control form-control-m", autocomplete="off", value=editable_tenders.entity_name) }}
+                    {% endif %}
+                </div>
+
 
 
                 <div class="form-group">
