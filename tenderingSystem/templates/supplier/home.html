@@ -30,7 +30,7 @@
                     <th scope="col">Tender document</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table_body">
                 {% for tender in tenders.items %}
                     <tr>
                         <th scope="row">{{ 1 }}</th>
@@ -73,6 +73,25 @@
     </div>
 
     <script>
+        function displaySearchResult(result) {
+            var toDisplay = '';
+            var counter = 1;
+            for (let i = 0; i < result.length; i++){
+                toDisplay +=
+                    "<tr>" +
+                        "<td>"+ counter++ +"</td>" +
+                        "<td>"+result[i].entity_type+"</td>" +
+                        "<td>"+result[i].entity_name+"</td>" +
+                        "<td>"+result[i].title+"</td>" +
+                        "<td>"+result[i].status+"</td>" +
+                        "<td>"+result[i].date_published+"</td>" +
+                        "<td>"+result[i].date_closed+"</td>" +
+                        "<td>"+result[i].tender_document+"</td>" +
+                    "</tr>";
+            }
+            $('.table_body').html(toDisplay);
+        }
+
         function getTender(keyword) {
             var request = new XMLHttpRequest();
 
@@ -84,9 +103,8 @@
             
             request.onreadystatechange = function () {
                 if (request.readyState == 4 && request.status == 200){
-                    var result = request.responseText;
-                    alert(result);
-                    return true;
+                    var result = JSON.parse(request.responseText);
+                    displaySearchResult(result);
                 }
             };
 

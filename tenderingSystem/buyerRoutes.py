@@ -224,3 +224,13 @@ def bid_per_tender():
 @app.route('/buyer/company/information/bidder/<int:bidder_id>')
 def get_bidder(bidder_id):
     return Company.json_first(id=bidder_id)
+
+
+@app.route('/buyer/tender-with-the-most-bids')
+def tender_with_the_most_bids():
+    company = get_company_information
+    query = db.engine.execute(f"SELECT * FROM Tenders WHERE company={company.id} "
+                              f"ORDER BY (SELECT coalesce(count(bid), 0) FROM bidTender "
+                              f"JOIN Bid ON bidTender.bid_id=Bid.id "
+                              f"JOIN Tenders ON bidTender.tender_id=Tenders.id WHERE company={company.id}) DESC")
+    pass

@@ -72,7 +72,7 @@
             // Create a new line chart object where as first parameter we pass in a selector
             // that is resolving to our chart container element. The Second parameter
             // is the actual data object.
-            chart = new Chartist.Bar('.ct-chart', data);
+            chart = new Chartist.Line('.ct-chart', data);
       });
 
 
@@ -92,16 +92,35 @@
             // Create a new line chart object where as first parameter we pass in a selector
             // that is resolving to our chart container element. The Second parameter
             // is the actual data object.
-            new Chartist.Line('.ct-chart', data);
+            new Chartist.Bar('.ct-chart', data);
         });
     }
 
-    $(document).ready(function () {
+
+        function displayTable(json_response) {
+
+        }
+
+        function TenderWithTheMostBids() {
+            $.ajax({
+                url: 'buyer/tender-with-the-most-bids',
+                type: 'GET',
+                success: function (result) {
+                    var json_response = JSON.parse(result.responseText);
+                    displayTable(json_response);
+                }
+            });
+        }
+
+        $(document).ready(function () {
           $("#filter_result").change(function () {
 
               var ajax_call = $("#filter_result").val();
 
               if (ajax_call === "most bid per tender"){
+                  TenderWithTheMostBids();
+              }
+              else {
                   mostBidsPerTender();
               }
 
